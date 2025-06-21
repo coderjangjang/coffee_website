@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Café Aurora</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 1s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="bg-[#fefaf6] text-gray-800">
+
+  <!-- 히어로 섹션 -->
+  <section class="bg-[url('https://images.unsplash.com/photo-1509042239860-f550ce710b93')] bg-cover bg-center h-[90vh] text-white flex items-center justify-center">
+    <div class="bg-black bg-opacity-50 p-10 rounded-xl text-center">
+      <h1 class="text-5xl md:text-6xl font-bold mb-4">Café Aurora</h1>
+      <p class="text-xl md:text-2xl mb-6">당신의 하루를 밝혀줄 완벽한 커피</p>
+      <a href="#menu" class="bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-full transition">메뉴 보기</a>
+    </div>
+  </section>
+
+  <!-- 메뉴 섹션 -->
+  <section id="menu" class="py-16 px-6 md:px-20 bg-white">
+    <h2 class="text-4xl text-center font-bold mb-12 fade-in">추천 메뉴</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+      <!-- 메뉴 카드 -->
+      <div class="bg-[#fffaf0] rounded-xl shadow-md p-6 text-center transform transition hover:scale-105 hover:shadow-lg fade-in">
+        <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?fit=crop&w=400&q=80" alt="오로라 라떼" class="rounded-lg mx-auto mb-4 w-full h-48 object-cover">
+        <h3 class="text-2xl font-semibold">오로라 라떼</h3>
+        <p class="text-gray-600 mt-2">부드럽고 진한 풍미, 크리미한 우유 거품</p>
+      </div>
+
+      <div class="bg-[#fffaf0] rounded-xl shadow-md p-6 text-center transform transition hover:scale-105 hover:shadow-lg fade-in">
+        <img src="https://cafe007.lk/wp-content/uploads/2024/09/americano.jpg" alt="아메리카노" class="rounded-lg mx-auto mb-4 w-full h-48 object-cover">
+        <h3 class="text-2xl font-semibold">시그니처 아메리카노</h3>
+        <p class="text-gray-600 mt-2">깊고 깨끗한 원두 본연의 맛</p>
+      </div>
+
+      <div class="bg-[#fffaf0] rounded-xl shadow-md p-6 text-center transform transition hover:scale-105 hover:shadow-lg fade-in">
+        <img src="https://imgproxy.isi.com/POSaPSwnw19nUJquO2NuHh-uGfqm29Q4FCilagicFks/aHR0cHM6Ly9zdy5pc2kuY29tL21lZGlhLzhkLzljLzVkLzE2ODEzNzM4NzMvTW9uaW4gR2luZ2VyLUxlbW9uIENvbGRicmV3XzAxLmpwZw" alt="콜드브루" class="rounded-lg mx-auto mb-4 w-full h-48 object-cover">
+        <h3 class="text-2xl font-semibold">콜드브루 블렌드</h3>
+        <p class="text-gray-600 mt-2">서늘한 감성과 함께하는 진한 맛</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 소개 섹션 -->
+  <section class="py-20 px-6 md:px-20 bg-[#fef6ee] text-center fade-in">
+    <h2 class="text-4xl font-bold mb-8">우리는 커피를 사랑합니다</h2>
+    <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-700">
+      Café Aurora는 매일 새벽, 신선한 원두를 엄선하여 로스팅합니다. 우리의 바리스타들은 한 잔 한 잔 정성을 담아 커피를 내립니다. 단순한 음료가 아닌, 하루를 시작하는 작은 기적을 담아드리고 싶어요.
+    </p>
+  </section>
+
+  <!-- 푸터 -->
+  <footer class="bg-[#3b2f2f] text-white text-center py-8">
+    <p>&copy; 2025 Café Aurora. All rights reserved.</p>
+    <p class="text-sm mt-2">Instagram: @cafe.aurora | 문의: contact@aurora.kr</p>
+  </footer>
+
+  <!-- 스크롤 애니메이션 -->
+  <script>
+    const fadeEls = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+    fadeEls.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

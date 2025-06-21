@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>온라인 주문하기 - Aurora</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #fefaf6; }
+  </style>
+</head>
+<body>
+  <div class="max-w-3xl mx-auto py-12 px-6">
+    <h1 class="text-4xl font-bold mb-8 text-center text-[#5b3a29]">온라인 주문하기</h1>
+
+    <div class="space-y-6">
+      <div class="flex justify-between items-center bg-white shadow rounded-lg p-4">
+        <div>
+          <h2 class="text-xl font-semibold">오로라 라떼</h2>
+          <p class="text-gray-500">₩4,500</p>
+        </div>
+        <input type="number" min="0" value="0" class="w-20 text-center border rounded p-1 quantity" data-price="4500" />
+      </div>
+
+      <div class="flex justify-between items-center bg-white shadow rounded-lg p-4">
+        <div>
+          <h2 class="text-xl font-semibold">아메리카노</h2>
+          <p class="text-gray-500">₩3,800</p>
+        </div>
+        <input type="number" min="0" value="0" class="w-20 text-center border rounded p-1 quantity" data-price="3800" />
+      </div>
+
+      <div class="flex justify-between items-center bg-white shadow rounded-lg p-4">
+        <div>
+          <h2 class="text-xl font-semibold">콜드브루</h2>
+          <p class="text-gray-500">₩5,000</p>
+        </div>
+        <input type="number" min="0" value="0" class="w-20 text-center border rounded p-1 quantity" data-price="5000" />
+      </div>
+    </div>
+
+    <!-- 이름 입력란 -->
+    <div class="mt-6">
+      <label for="customerName" class="block mb-2 font-semibold text-lg text-[#5b3a29]">이름</label>
+      <input type="text" id="customerName" placeholder="이름을 입력하세요" class="w-full p-2 border rounded" />
+    </div>
+
+    <div class="mt-8 text-right text-xl font-bold">
+      총합: <span id="total">₩0</span>
+    </div>
+
+    <div class="mt-6 text-center">
+      <button id="orderBtn" class="bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-full text-lg">
+        주문하기
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const quantities = document.querySelectorAll(".quantity");
+    const totalSpan = document.getElementById("total");
+    const orderBtn = document.getElementById("orderBtn");
+
+    function updateTotal() {
+      let total = 0;
+      quantities.forEach(input => {
+        const count = parseInt(input.value) || 0;
+        const price = parseInt(input.dataset.price);
+        total += count * price;
+      });
+      totalSpan.textContent = "₩" + total.toLocaleString();
+    }
+
+    quantities.forEach(input => {
+      input.addEventListener("input", updateTotal);
+    });
+
+    orderBtn.addEventListener("click", () => {
+      const customerName = document.getElementById("customerName").value.trim();
+      if (!customerName) {
+        alert("이름을 입력하세요!");
+        return;
+      }
+
+      let order = [];
+      let total = 0;
+      quantities.forEach(input => {
+        const name = input.parentElement.querySelector("h2").textContent;
+        const count = parseInt(input.value);
+        const price = parseInt(input.dataset.price);
+        if (count > 0) {
+          order.push({ name, count, price });
+          total += count * price;
+        }
+      });
+
+      if (order.length === 0) {
+        alert("주문할 메뉴를 선택하세요!");
+        return;
+      }
+
+      fetch("http://localhost:5000/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ customerName, items: order, total: total })
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("서버 오류");
+        return res.json();
+      })
+      .then(data => {
+        alert(`✅ 주문 완료! 주문번호: ${data.orderId}`);
+        // 초기화
+        document.getElementById("customerName").value = "";
+        quantities.forEach(input => input.value = 0);
+        updateTotal();
+      })
+      .catch(() => alert("❌ 주문 실패. 다시 시도해 주세요."));
+    });
+
+    updateTotal(); // 초기 총합 표시
+  </script>
+</body>
+</html>
