@@ -209,7 +209,7 @@
         return;
       }
 
-      fetch("http://localhost:5000/order", {
+      fetch("http://192.168.50.125:5000/order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ customerName, items: order, total: total })
